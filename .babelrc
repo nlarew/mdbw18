@@ -1,0 +1,6 @@
+{
+  "presets": ["es2016", "es2017", "react-app"],
+  "plugins": [
+    ["emotion", { "sourceMap": true, "autoLabel": true }]
+  ]
+}
