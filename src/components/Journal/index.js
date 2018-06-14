@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import styled, { css } from 'react-emotion';
-import Entry, { EntryComposer } from "./Entry";
+import PropTypes from "prop-types";
+import styled from 'react-emotion';
 import { Card } from "semantic-ui-react";
+import Entry from "./Entry";
+import Composer from "./Composer";
 
 const JournalContainer = styled.div`
   margin: 10px 0 0 0;
-  padding: 2px 0;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -15,13 +16,7 @@ const JournalContainer = styled.div`
 class Journal extends Component {
   constructor(props) {
     super(props);
-    const {
-      stitch: { client, mongodb }
-    } = props;
-
-    console.log('p', props)
-
-    this.stitchClient = client;
+    const { mongodb } = props.context;
     this.entries = mongodb.db("journal").collection("entries");
     this.state = {
       entries: []
@@ -36,22 +31,21 @@ class Journal extends Component {
     this.setState({ entries });
   }
 
-  addEntry = async text => {
-    const { currentUser } = this.props.stitch;
+  addEntry = async (title="Untitled", body) => {
+    const { currentUser } = this.props.context;
     const newEntry = {
-      owner_id: currentUser.user_id,
-      author: currentUser.data.email,
+      title,
+      body,
+      owner_id: currentUser.profile.user_id,
+      author: currentUser.profile.data.email,
       date: new Date(),
-      body: text,
       sharedWith: []
     };
 
     try {
       
       // TODO: Add newEntry to MongoDB
-      console.log("newEntry", newEntry);
       const result = await this.entries.insertOne(newEntry);
-      console.log('result', result)
       newEntry._id = result.insertedId;
       
       // Add newEntry to Component State
@@ -113,11 +107,33 @@ class Journal extends Component {
 
       // Add the provided email to the Entry sharedWith array in Component State
       this.setState(({ entries }) => ({
-        entries: entries.map(entry => {
-          return entry._id === entryId
+        entries: entries.map(entry => entry._id === entryId
             ? { ...entry, sharedWith: [...entry.sharedWith, email] }
-            : entry;
-        })
+            : entry)
+      }));
+    } catch (err) {
+      console.error(`Error sharing entry: ${err}`);
+    }
+  };
+
+  unshareEntry = async (entryId, email) => {
+    try {
+
+      // TODO: Remove the provided email from the Entry sharedWith array in MongoDB
+      await this.entries.updateOne(
+        { _id: entryId },
+        { $pull: { sharedWith: email } },
+        { multi: true }
+      );
+
+      // Remove the provided email from the Entry sharedWith array in Component State
+      this.setState(({ entries }) => ({
+        entries: entries.map(entry => entry._id === entryId
+          ? { ...entry,
+              sharedWith: entry.sharedWith.filter(e => e !== email)
+            }
+          : entry
+        )
       }));
     } catch (err) {
       console.error(`Error sharing entry: ${err}`);
@@ -127,50 +143,58 @@ class Journal extends Component {
   editEntry = entryId => {
     // Enable Entry editing in Component State
     this.setState(({ entries }) => ({
-      entries: entries.map(entry => {
-        return entry._id === entryId ? { ...entry, isEditable: true } : entry;
-      })
+      entries: entries.map(entry => entry._id === entryId ? { ...entry, isEditable: true } : entry)
     }));
   };
 
   cancelEditEntry = entryId => {
     // Discard any text the user entered and disable editing in Component State
     this.setState(({ entries }) => ({
-      entries: entries.map(entry => {
-        return entry._id === entryId ? { ...entry, isEditable: false } : entry;
-      })
+      entries: entries.map(entry => entry._id === entryId ? { ...entry, isEditable: false } : entry)
     }));
   };
 
   renderEntries = () => {
-    const { removeEntry, updateEntry, shareEntry, editEntry, cancelEditEntry } = this;
-    console.log('aaa', this)
-    const handlers = { removeEntry, updateEntry, shareEntry, editEntry, cancelEditEntry };
+    const { currentUser } = this.props.context;
+    const entryHandlers = {
+      remove: this.removeEntry,
+      update: this.updateEntry,
+      share: this.shareEntry,
+      unshare: this.unshareEntry,
+      edit: this.editEntry,
+      cancelEdit: this.cancelEditEntry,
+    };
     return this.state.entries.map(entry => (
       <Entry
-        key={entry._id}
-        entryHandlers={handlers}
-        isEditable={false}
-        currentUser={this.props.currentUser}
         {...entry}
+        entryHandlers={entryHandlers}
+        key={entry._id}
+        isEditable={entry.isEditable}
+        currentUserIsAuthor={entry.author === currentUser.profile.data.email}
       />
     ));
-  }
+  };
 
-  render = () => {
+  render() {
     return (
       <JournalContainer>
-        <div className={css`margin-bottom: 20px;`}>
-          <EntryComposer addEntry={this.addEntry} />
-        </div>
-        {this.state.entries.length <= 0 ? <h2>
-            No entries.
-          </h2> : <Card.Group centered itemsPerRow={1}>
+        <Composer submitHandler={this.addEntry} />
+        {
+          this.state.entries.length <= 0
+          ? <h2>No entries.</h2>
+          : 
+          <Card.Group centered itemsPerRow={1}>
             {this.renderEntries()}
-          </Card.Group>}
+          </Card.Group>
+        }
       </JournalContainer>
-    )
-  }
+    );
+    
+  };
 }
+
+Journal.propTypes = {
+  context: PropTypes.object.isRequired,
+};
 
 export default Journal;

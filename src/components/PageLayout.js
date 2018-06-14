@@ -1,6 +1,7 @@
-import React from "react";
-import styled from "react-emotion";
+import React, { Fragment } from "react";
+import styled, { css } from "react-emotion";
 import { Menu } from "semantic-ui-react";
+import { StitchContext } from "../stitch.js";
 
 const PageContainer = styled.div`
   width: 100vw;
@@ -13,16 +14,40 @@ const PageContainer = styled.div`
 `;
 
 const PageLayout = props => {
-  const { isAuthenticated, profile } = props.currentUser;
+  const {
+    logoutCurrentUser,
+    currentUser: { isAuthenticated, profile }
+  } = props;
+
   return (
     <PageContainer>
       <Menu inverted>
         <Menu.Item header>My Daily Journal</Menu.Item>
-        {isAuthenticated && <Menu.Item>Logged in as: {profile.email}</Menu.Item> }
+        {isAuthenticated &&
+          <Fragment>
+            <Menu.Item>Logged in as: {profile.data.email}</Menu.Item>
+            <Menu.Item
+              name="logout"
+              onClick={logoutCurrentUser}
+              className={css`margin-left: auto;`}
+            />
+          </Fragment>
+        }
       </Menu>
+
       {props.children}
     </PageContainer>
-  )
-}
+  );
+};
 
-export default PageLayout
+const Page = (props) => (
+  <StitchContext.Consumer>
+    { stitch => (
+      <PageLayout {...stitch} >
+        {props.children}
+      </PageLayout>
+    )}
+  </StitchContext.Consumer>
+);
+
+export default Page;

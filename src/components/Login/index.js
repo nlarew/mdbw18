@@ -1,27 +1,31 @@
 import React, { Component } from "react";
 import styled from "react-emotion";
 import { Redirect } from "react-router-dom";
+import { StitchContext } from "../../stitch.js";
 import {
   Segment,
   Form,
   Header,
   Message,
+  Button,
 } from "semantic-ui-react";
 
-const LoginPage = styled.div`
+const LoginContainer = styled.div`
   height: 100%;
   
   display: grid;
   grid-template-rows: 50px auto 1fr;
   grid-template-columns: 1fr 500px 1fr;
-`
+`;
 
 const LoginForm = styled(Segment)`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
-`
+`;
 
-export default class Login extends Component {
+
+
+class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,52 +34,43 @@ export default class Login extends Component {
         password: ""
       },
       errorMessage: ""
-    }
-  }
-
-  hackLogin = async () => {
-    const { client: stitchClient } = this.props.stitch;
-    await stitchClient.authenticate("userpass", { username: "nlarew@gmail.com", password: "nlarew" })
-    this.props.setAuth()
-  }
-
-  login = async () => {
-    const { client: stitchClient } = this.props.stitch;
-    const { userInput: { username, password } } = this.state;
-    try {
-      await stitchClient.authenticate("userpass", {username, password})
-      this.props.setAuth()
-    } catch(error) {
-      console.error(error)
-      this.setState({ errorMessage: "Incorrect username or password." })
-    }
+    };
   }
 
   handleChange = (e, { name, value }) => {
     return this.setState(prevState => ({
       userInput: { ...prevState.userInput, [name]: value }
-    }))
-  }
+    }));
+  };
 
   render = () => {
-    const { userInput, errorMessage } = this.state;
-    const { isAuthenticated } = this.props.stitch;
+    const {
+      errorMessage,
+      userInput: { username, password },
+    } = this.state;
+    
+    const {
+      authenticateUser,
+      currentUser: { isAuthenticated }
+    } = this.props.context;
+    
     if (isAuthenticated) {
-      return <Redirect to="/" />
+      return <Redirect to="/" />;
     }
-    // else { this.hackLogin() }
     
     return (
-      <LoginPage>
+      <LoginContainer>
         <LoginForm>
-          <Form onSubmit={this.login}>
+          <Button onClick={() => authenticateUser("nlarew@gmail.com", "nlarew")}>nlarew</Button>
+          <Button onClick={() => authenticateUser("someotheruser@example.com", "password")}>some other user</Button>
+          <Form onSubmit={() => { authenticateUser(username, password); }}>
             <Header as="h1">Log In</Header>
             <Form.Input
               fluid
               label="Username"
               name="username"
               placeholder="someone@example.com"
-              defaultValue={userInput.username}
+              defaultValue={username}
               onChange={this.handleChange}
             />
             <Form.Input
@@ -84,7 +79,7 @@ export default class Login extends Component {
               name="password"
               type="password"
               placeholder="SuperSecretPassword"
-              defaultValue={userInput.password}
+              defaultValue={password}
               onChange={this.handleChange}
             />
             {
@@ -99,8 +94,17 @@ export default class Login extends Component {
             </Form.Button>
           </Form>
         </LoginForm>
-      </LoginPage>
-  )
-}
+      </LoginContainer>
+    );
+  };
 
 }
+
+const Login = () => (
+  <div>
+    <StitchContext.Consumer>
+      {stitch => <LoginPage context={stitch} />}
+    </StitchContext.Consumer>
+  </div>
+);
+export default Login;
