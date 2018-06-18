@@ -21,8 +21,17 @@ const ShareWithInput = (props) => (
 );
 
 class ShareSheet extends Component {
+  static propTypes = {
+    id: PropTypes.object.isRequired,
+    header: PropTypes.string.isRequired,
+    share: PropTypes.func.isRequired,
+    unshare: PropTypes.func.isRequired,
+    sharedWith: PropTypes.array.isRequired,
+  };
+
   constructor(props) {
     super(props);
+
     this.state = {
       open: false,
       shareWithInput: ""

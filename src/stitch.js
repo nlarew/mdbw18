@@ -1,84 +1,72 @@
-import React, { createContext } from 'react';
+import React from "react";
 import PropTypes from "prop-types";
-import { StitchClientFactory } from 'mongodb-stitch';
-
-const StitchContext = createContext({
-  stitchClient: {},
-  mongodb: {},
-  currentUser: { isAuthenticated: false, profile: { email: "" } }
-});
-
-const withStitch = (Component) => (
-  <StitchContext.Consumer>
-    {stitch => <Component context={stitch} />}
-  </StitchContext.Consumer>
-);
-
-export { StitchContext, withStitch };
+import { StitchClientFactory } from "mongodb-stitch";
 
 export default class StitchApp extends React.Component {
+  static propTypes = {
+    appId: PropTypes.string.isRequired,
+  };
+  
   constructor(props) {
     super(props);
     this.appId = props.appId;
     this.state = {
-      stitchClient: {},
-      mongodb: {},
-      currentUser: { isAuthenticated: false, profile: {} }
+      stitchClient: "",
+      isAuthenticated: false,
+      currentUser: "",
     };
   }
 
-  componentDidMount() {
-    this.initializeAppClient(this.appId);
-  }
-
-  initializeAppClient = async (appId) => {
+  componentDidMount = async () => {
     // Create a Stitch client object
-    const stitchClient = await StitchClientFactory.create(appId);
-    await stitchClient.logout();
-    // Instantiate the MongoDB Service
-    const mongodb = stitchClient.service("mongodb", "mongodb-atlas");
-    // Stub out an object for the current user's profile information
+    const stitchClient = await StitchClientFactory.create(this.appId);
+    // Check if someone is already logged in
     const isAuthenticated = stitchClient.isAuthenticated();
-    const profile = isAuthenticated ? await stitchClient.userProfile() : {};
-    const currentUser = { isAuthenticated, profile };
+    // If someone is logged in, get their user profile
+    const currentUser = isAuthenticated
+      ? await stitchClient.userProfile()
+      : "";
+    
+    this.setState({ stitchClient, isAuthenticated, currentUser });
+  };
 
-    this.setState({ stitchClient, mongodb, currentUser });
+  componentDidCatch = (error, info) => {
+    this.setState({ hasError: { error, info } });
   };
 
   authenticateUser = async (username, password) => {
-    const { stitchClient } = this.state;
-    try {
-      await stitchClient.authenticate("userpass", { username, password });
-      const profile = await stitchClient.userProfile();
-      
-      this.setState(({ currentUser }) => ({
-        currentUser: { ...currentUser, profile, isAuthenticated: true }
-      }));
-    } catch (error) {
-      this.setState({ errorMessage: "Incorrect username or password." });
-    }
+    const { stitchClient, isAuthenticated } = this.state;
+    if(isAuthenticated) { return; }
+    
+    await stitchClient.authenticate(
+      "userpass",
+      { username, password }
+    );
+    const currentUser = await stitchClient.userProfile();
+
+    this.setState({ currentUser, isAuthenticated: true });
   };
 
   logoutCurrentUser = async () => {
     const { stitchClient } = this.state;
+    
     await stitchClient.logout();
-    this.setState(() => ({ currentUser: { profile: {}, isAuthenticated: false } }));
+    
+    this.setState({ currentUser: "", isAuthenticated: false });
   };
 
   render() {
-    const providerData = {
+    const { stitchClient } = this.state;
+    const clientIsLoading = !stitchClient;
+
+    const stitch = {
       ...this.state,
       authenticateUser: this.authenticateUser,
-      logoutCurrentUser: this.logoutCurrentUser,
+      logoutCurrentUser: this.logoutCurrentUser
     };
-    return(
-      <StitchContext.Provider value={providerData}>
-        {this.props.children}
-      </StitchContext.Provider>
-    );
+
+    return clientIsLoading
+      ? <div>loading...</div>
+      : this.props.render(stitch);
   }
 }
-
-StitchApp.propTypes = {
-  appId: PropTypes.string.isRequired,
-};

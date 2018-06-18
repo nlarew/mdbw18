@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import styled from "react-emotion";
 import { Redirect } from "react-router-dom";
-import { StitchContext } from "../../stitch.js";
 import {
   Segment,
   Form,
@@ -23,11 +23,15 @@ const LoginForm = styled(Segment)`
   grid-row: 2 / 3;
 `;
 
+export default class Login extends Component {
+  static propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired,
+    authenticateUser: PropTypes.func.isRequired,
+  };
 
-
-class LoginPage extends Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       userInput: {
         username: "",
@@ -51,8 +55,8 @@ class LoginPage extends Component {
     
     const {
       authenticateUser,
-      currentUser: { isAuthenticated }
-    } = this.props.context;
+      isAuthenticated
+    } = this.props;
     
     if (isAuthenticated) {
       return <Redirect to="/" />;
@@ -99,12 +103,3 @@ class LoginPage extends Component {
   };
 
 }
-
-const Login = () => (
-  <div>
-    <StitchContext.Consumer>
-      {stitch => <LoginPage context={stitch} />}
-    </StitchContext.Consumer>
-  </div>
-);
-export default Login;

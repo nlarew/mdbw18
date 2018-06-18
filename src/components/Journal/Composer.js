@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { css } from 'react-emotion';
+import PropTypes from "prop-types";
+import { css } from "react-emotion";
 
 import {
   Button,
@@ -16,6 +17,10 @@ const ComposerTrigger = ({clickHandler}) => (
 );
 
 export default class EntryComposer extends Component {
+  static propTypes = {
+    submitHandler: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +32,6 @@ export default class EntryComposer extends Component {
   
   showModal = () => this.setState({ open: true });
   closeModal = () => this.setState({ open: false });
-
   handleInput = (e, { name, value }) => this.setState({ [name]: value });
 
   render() {
