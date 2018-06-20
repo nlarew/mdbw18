@@ -21,7 +21,7 @@ const Page = props => {
         <Menu.Item header>Daily Journal</Menu.Item>
         {currentUser && (
           <Fragment>
-            <Menu.Item>Logged in as: {currentUser.data.email}</Menu.Item>
+            <Menu.Item>Logged in as: {currentUser.profile.data.email}</Menu.Item>
             <Menu.Item
               name="logout"
               onClick={logoutCurrentUser}

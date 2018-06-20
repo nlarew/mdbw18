@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { StitchClientFactory } from "mongodb-stitch";
 
-export default class StitchApp extends React.Component {
+class StitchApp extends React.Component {
   static propTypes = {
     appId: PropTypes.string.isRequired,
   };

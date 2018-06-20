@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "react-emotion";
-import { Redirect } from "react-router-dom";
 import {
   Segment,
   Form,
@@ -25,7 +24,6 @@ const LoginForm = styled(Segment)`
 
 export default class Login extends Component {
   static propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired,
     authenticateUser: PropTypes.func.isRequired,
   };
 
@@ -53,14 +51,7 @@ export default class Login extends Component {
       userInput: { username, password },
     } = this.state;
     
-    const {
-      authenticateUser,
-      isAuthenticated
-    } = this.props;
-    
-    if (isAuthenticated) {
-      return <Redirect to="/" />;
-    }
+    const { authenticateUser } = this.props;
     
     return (
       <LoginContainer>

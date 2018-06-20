@@ -15,15 +15,13 @@ const JournalContainer = styled.div`
 
 class Journal extends Component {
   static propTypes = {
-    stitchClient: PropTypes.object.isRequired,
     currentUser: PropTypes.any.isRequired,
+    mongodb: PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
-    const { stitchClient } = this.props;
-    const mongodb = stitchClient.service("mongodb", "mongodb-atlas");
-
+    const { mongodb } = this.props;
     this.entries = mongodb.db("journal").collection("entries");
     this.state = {
       entries: []
@@ -32,7 +30,7 @@ class Journal extends Component {
 
   async componentDidMount() {
     // TODO: Fetch existing journal entries
-    const entries = await this.entries.find({}).execute();
+    const entries = await this.entries.find({}).asArray();
 
     // Add entries to Component State
     this.setState({ entries });
@@ -43,8 +41,8 @@ class Journal extends Component {
     const newEntry = {
       title,
       body,
-      owner_id: currentUser.user_id,
-      author: currentUser.data.email,
+      owner_id: currentUser.id,
+      author: currentUser.profile.data.email,
       date: new Date(),
       sharedWith: []
     };
@@ -163,7 +161,7 @@ class Journal extends Component {
         entryHandlers={entryHandlers}
         key={entry._id}
         isEditable={entry.isEditable}
-        currentUserIsAuthor={entry.author === currentUser.data.email}
+        currentUserIsAuthor={entry.author === currentUser.profile.data.email}
       />
     ));
   };

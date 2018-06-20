@@ -4,56 +4,70 @@ import "semantic-ui-css/semantic.min.css";
 // React
 import React from "react";
 import ReactDOM from "react-dom";
-// Component Imports
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import Journal from "./components/Journal";
-import Login from "./components/Login";
+// App Components
 import Page from "./components/Page";
+import Login from "./components/Login";
+import Journal from "./components/Journal";
 // MongoDB Stitch
-import StitchApp from "./stitch";
+import {
+  Stitch,
+  UserPasswordCredential,
+  RemoteMongoClient
+} from "mongodb-stitch-browser-sdk";
 
-const AppRouter = stitch => {
-  const {
-    stitchClient,
-    isAuthenticated,
-    currentUser,
-    authenticateUser,
-    logoutCurrentUser
-  } = stitch;
+const APP_ID = "mdbw18-mltgy";
 
-  const pageProps = { currentUser, logoutCurrentUser };
-  const journalProps = { stitchClient, currentUser };
-  const loginProps = { isAuthenticated, authenticateUser };
+class StitchApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.appId = props.appId;
+    this.client = Stitch.initializeDefaultAppClient(this.appId);
+    this.mongodb = this.client.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+    
+    const isAuthed = this.client.auth.isLoggedIn;
+    this.state = { isAuthed };
+  }
 
-  return (
-    <Router>
-      <Page {...pageProps}>
+  login = async (email, password) => {
+    const { isAuthed } = this.state;
+    if (isAuthed) {
+      return;
+    }
 
-        <Route
-          path="/login"
-          render={() => <Login {...loginProps} />}
-        />
+    const credential = new UserPasswordCredential(email, password);
+    await this.client.auth.loginWithCredential(credential);
+    this.setState({ isAuthed: true });
+  };
 
-        <Route
-          exact path="/"
-          render={() => {
-            if (!isAuthenticated) {
-              return <Redirect to="/login" />;
-            }
-            return <Journal {...journalProps} />;
-          }}
-        />
+  logout = async () => {
+    this.client.auth.logout();
+    this.setState({ isAuthed: false });
+  };
 
+  render() {
+    const { isAuthed } = this.state;
+    const currentUser = isAuthed && this.client.auth.currentUser;
+    
+    return (
+      <Page
+        currentUser={currentUser}
+        logoutCurrentUser={this.logout}
+      >{
+        isAuthed ? (
+          <Journal
+            mongodb={this.mongodb}
+            currentUser={currentUser}
+          />
+        ) : (
+          <Login authenticateUser={this.login} />
+        )
+      }
       </Page>
-    </Router>
-  );
-};
+    );
+  }
+}
 
 ReactDOM.render(
-  <StitchApp
-    appId="mdbw18-mltgy"
-    render={AppRouter}
-  />,
+  <StitchApp appId="mdbw18-mltgy" />,
   document.getElementById("root")
 );
-
