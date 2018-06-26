@@ -24,7 +24,7 @@ const LoginForm = styled(Segment)`
 
 export default class Login extends Component {
   static propTypes = {
-    authenticateUser: PropTypes.func.isRequired,
+    loginUser: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -51,14 +51,14 @@ export default class Login extends Component {
       userInput: { username, password },
     } = this.state;
     
-    const { authenticateUser } = this.props;
+    const { loginUser } = this.props;
     
     return (
       <LoginContainer>
         <LoginForm>
-          <Button onClick={() => authenticateUser("nlarew@gmail.com", "nlarew")}>nlarew</Button>
-          <Button onClick={() => authenticateUser("someotheruser@example.com", "password")}>some other user</Button>
-          <Form onSubmit={() => { authenticateUser(username, password); }}>
+          <Button onClick={() => loginUser("nlarew@gmail.com", "nlarew")}>nlarew</Button>
+          <Button onClick={() => loginUser("someotheruser@example.com", "password")}>some other user</Button>
+          <Form onSubmit={() => { loginUser(username, password); }}>
             <Header as="h1">Log In</Header>
             <Form.Input
               fluid

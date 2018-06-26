@@ -4,6 +4,7 @@ import "semantic-ui-css/semantic.min.css";
 // React
 import React from "react";
 import ReactDOM from "react-dom";
+import PropTypes from 'prop-types'
 // App Components
 import Page from "./components/Page";
 import Login from "./components/Login";
@@ -15,15 +16,17 @@ import {
   RemoteMongoClient
 } from "mongodb-stitch-browser-sdk";
 
-const APP_ID = "mdbw18-mltgy";
-
 class StitchApp extends React.Component {
+  static propTypes = {
+    appId: PropTypes.string.isRequired,
+  };
+  
   constructor(props) {
     super(props);
     this.appId = props.appId;
     this.client = Stitch.initializeDefaultAppClient(this.appId);
     this.mongodb = this.client.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
-    
+  
     const isAuthed = this.client.auth.isLoggedIn;
     this.state = { isAuthed };
   }
@@ -59,7 +62,7 @@ class StitchApp extends React.Component {
             currentUser={currentUser}
           />
         ) : (
-          <Login authenticateUser={this.login} />
+          <Login loginUser={this.login} />
         )
       }
       </Page>

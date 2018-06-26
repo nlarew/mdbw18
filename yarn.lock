@@ -24,11 +24,18 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@emotion/babel-utils@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@emotion/babel-utils/-/babel-utils-0.5.3.tgz#6be6dd7a480fdbdfb6cbba7f4f6d9361744b8d6e"
+"@emotion/babel-utils@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@emotion/babel-utils/-/babel-utils-0.6.4.tgz#2eac69eb31ae944fbe4a2a0e736a35db5f810866"
+  dependencies:
+    "@emotion/hash" "^0.6.3"
+    "@emotion/memoize" "^0.6.2"
+    "@emotion/serialize" "^0.8.2"
+    convert-source-map "^1.5.1"
+    find-root "^1.1.0"
+    source-map "^0.7.2"
 
-"@emotion/hash@^0.6.2":
+"@emotion/hash@^0.6.2", "@emotion/hash@^0.6.3":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.6.3.tgz#0e7a5604626fc6c6d4ac4061a2f5ac80d50262a4"
 
@@ -42,17 +49,26 @@
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.6.2.tgz#138e00b332d519b4e307bded6159e5ba48aba3ae"
 
-"@emotion/stylis@^0.6.5":
-  version "0.6.9"
-  resolved "https://registry.yarnpkg.com/@emotion/stylis/-/stylis-0.6.9.tgz#2145c179cc0fda18e5544bd65e249d3601920997"
+"@emotion/serialize@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@emotion/serialize/-/serialize-0.8.2.tgz#d3b2caddfc93107d63c79fc6bbc11e555e3b762e"
+  dependencies:
+    "@emotion/hash" "^0.6.3"
+    "@emotion/memoize" "^0.6.2"
+    "@emotion/unitless" "^0.6.3"
+    "@emotion/utils" "^0.7.1"
 
-"@emotion/unitless@^0.6.2":
+"@emotion/stylis@^0.6.10":
+  version "0.6.10"
+  resolved "https://registry.yarnpkg.com/@emotion/stylis/-/stylis-0.6.10.tgz#7d321e639ebc8ba23ace5990c20e94dcebb8f3dd"
+
+"@emotion/unitless@^0.6.2", "@emotion/unitless@^0.6.3":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.6.3.tgz#65682e68a82701c70eefb38d7f941a2c0bfa90de"
 
-Base64@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/Base64/-/Base64-1.0.1.tgz#def45cc50c961bcc9bf2321d0f52bcbfec1f1bb1"
+"@emotion/utils@^0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.7.1.tgz#e44e596d03c9f16ba3b127ad333a8a072bcb5a0a"
 
 abab@^1.0.3:
   version "1.0.4"
@@ -602,15 +618,15 @@ babel-plugin-dynamic-import-node@1.1.0:
     babel-template "^6.26.0"
     babel-types "^6.26.0"
 
-babel-plugin-emotion@^9.1.2, babel-plugin-emotion@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-emotion/-/babel-plugin-emotion-9.2.0.tgz#43543dd02c7b5cd89d464aeedef864edb754b852"
+babel-plugin-emotion@^9.1.2, babel-plugin-emotion@^9.2.4:
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-emotion/-/babel-plugin-emotion-9.2.4.tgz#a4e54a8097f6ba06cbbc7a9063927afafe9fe73a"
   dependencies:
     "@babel/helper-module-imports" "7.0.0-beta.40"
-    "@emotion/babel-utils" "^0.5.3"
+    "@emotion/babel-utils" "^0.6.4"
     "@emotion/hash" "^0.6.2"
     "@emotion/memoize" "^0.6.1"
-    "@emotion/stylis" "^0.6.5"
+    "@emotion/stylis" "^0.6.10"
     babel-plugin-macros "^2.0.0"
     babel-plugin-syntax-jsx "^6.18.0"
     convert-source-map "^1.5.0"
@@ -1799,13 +1815,13 @@ create-emotion-styled@^9.2.3:
   dependencies:
     "@emotion/is-prop-valid" "^0.6.1"
 
-create-emotion@^9.2.1:
-  version "9.2.1"
-  resolved "https://registry.yarnpkg.com/create-emotion/-/create-emotion-9.2.1.tgz#1316189d53bf65cf191a59d3ac6ecb6f4e13e020"
+create-emotion@^9.2.4:
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/create-emotion/-/create-emotion-9.2.4.tgz#0a4379f6bf0708c54fe26bfcd6b6bd3592e8cf23"
   dependencies:
     "@emotion/hash" "^0.6.2"
     "@emotion/memoize" "^0.6.1"
-    "@emotion/stylis" "^0.6.5"
+    "@emotion/stylis" "^0.6.10"
     "@emotion/unitless" "^0.6.2"
     csstype "^2.5.2"
     stylis "^3.5.0"
@@ -2116,10 +2132,6 @@ destroy@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
 
-detect-browser@^1.7.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/detect-browser/-/detect-browser-1.12.0.tgz#71b57d7809fc6e42050b28f89529123c1b3290f9"
-
 detect-browser@^2.4.0:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/detect-browser/-/detect-browser-2.5.1.tgz#141d1580fb901156576a0a992ac319c4b2148f8b"
@@ -2270,8 +2282,8 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
 electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.30, electron-to-chromium@^1.3.47:
-  version "1.3.48"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.48.tgz#d3b0d8593814044e092ece2108fc3ac9aea4b900"
+  version "1.3.50"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.50.tgz#7438b76f92b41b919f3fbdd350fbd0757dacddf7"
 
 elliptic@^6.0.0:
   version "6.4.0"
@@ -2294,11 +2306,11 @@ emojis-list@^2.0.0:
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
 
 emotion@^9.1.3:
-  version "9.2.3"
-  resolved "https://registry.yarnpkg.com/emotion/-/emotion-9.2.3.tgz#c93b9a222df92e6281036afa02b3b5b8cfb9e049"
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/emotion/-/emotion-9.2.4.tgz#0139e7cc154b2845f4b9afaa996dd4de13bb90e3"
   dependencies:
-    babel-plugin-emotion "^9.2.0"
-    create-emotion "^9.2.1"
+    babel-plugin-emotion "^9.2.4"
+    create-emotion "^9.2.4"
 
 encodeurl@~1.0.2:
   version "1.0.2"
@@ -3511,8 +3523,8 @@ ignore-walk@^3.0.1:
     minimatch "^3.0.4"
 
 ignore@^3.3.3:
-  version "3.3.8"
-  resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.8.tgz#3f8e9c35d38708a3a7e0e9abb6c73e7ee7707b2b"
+  version "3.3.10"
+  resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.10.tgz#0a97fb876986e8081c631160f8f9f389157f0043"
 
 import-lazy@^2.1.0:
   version "2.1.0"
@@ -4333,10 +4345,6 @@ jsx-ast-utils@^2.0.0, jsx-ast-utils@^2.0.1:
   dependencies:
     array-includes "^3.0.3"
 
-jwt-decode@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-2.2.0.tgz#7d86bd56679f58ce6a84704a657dd392bba81a79"
-
 keyboard-key@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/keyboard-key/-/keyboard-key-1.0.1.tgz#a946294fe59ad5431c63a3ea269f023e51fac6aa"
@@ -4751,52 +4759,42 @@ mongodb-extjson@^3.0.0:
   dependencies:
     bson "^3.0.0"
 
-mongodb-stitch-browser-core@^4.0.0-beta-2:
-  version "4.0.0-beta-2"
-  resolved "https://registry.yarnpkg.com/mongodb-stitch-browser-core/-/mongodb-stitch-browser-core-4.0.0-beta-2.tgz#a325eb5989d7ee305d8a0e7cd3f794785a65711e"
+mongodb-stitch-browser-core@^4.0.0-beta-4:
+  version "4.0.0-beta-4"
+  resolved "https://registry.yarnpkg.com/mongodb-stitch-browser-core/-/mongodb-stitch-browser-core-4.0.0-beta-4.tgz#ad40584cce7e4b94a066202584864db7abf0a1ee"
   dependencies:
     detect-browser "^2.4.0"
-    mongodb-stitch-core-sdk "^4.0.0-beta-2"
+    mongodb-stitch-core-sdk "^4.0.0-beta-4"
 
-mongodb-stitch-browser-sdk@^4.0.0-beta-2:
-  version "4.0.0-beta-2"
-  resolved "https://registry.yarnpkg.com/mongodb-stitch-browser-sdk/-/mongodb-stitch-browser-sdk-4.0.0-beta-2.tgz#a84b46a8026feacea1f3d0944fa289b7f5a32c9a"
+mongodb-stitch-browser-sdk@^4.0.0-beta-4:
+  version "4.0.0-beta-4"
+  resolved "https://registry.yarnpkg.com/mongodb-stitch-browser-sdk/-/mongodb-stitch-browser-sdk-4.0.0-beta-4.tgz#957056209f140bf2c7c04c2013ab4de6123552c1"
   dependencies:
-    mongodb-stitch-browser-core "^4.0.0-beta-2"
-    mongodb-stitch-browser-services-mongodb-remote "^4.0.0-beta-2"
+    mongodb-stitch-browser-core "^4.0.0-beta-4"
+    mongodb-stitch-browser-services-mongodb-remote "^4.0.0-beta-4"
 
-mongodb-stitch-browser-services-mongodb-remote@^4.0.0-beta-2:
-  version "4.0.0-beta-2"
-  resolved "https://registry.yarnpkg.com/mongodb-stitch-browser-services-mongodb-remote/-/mongodb-stitch-browser-services-mongodb-remote-4.0.0-beta-2.tgz#a4ae9f0c0ded25355ba72ed68f5b51a62ad87c90"
+mongodb-stitch-browser-services-mongodb-remote@^4.0.0-beta-4:
+  version "4.0.0-beta-4"
+  resolved "https://registry.yarnpkg.com/mongodb-stitch-browser-services-mongodb-remote/-/mongodb-stitch-browser-services-mongodb-remote-4.0.0-beta-4.tgz#96980d7bc0db2bba2e8a29f4519fe91eb2cb5347"
   dependencies:
-    mongodb-stitch-browser-core "^4.0.0-beta-2"
-    mongodb-stitch-core-services-mongodb-remote "^4.0.0-beta-2"
+    mongodb-stitch-browser-core "^4.0.0-beta-4"
+    mongodb-stitch-core-services-mongodb-remote "^4.0.0-beta-4"
 
-mongodb-stitch-core-sdk@^4.0.0-beta-2:
-  version "4.0.0-beta-2"
-  resolved "https://registry.yarnpkg.com/mongodb-stitch-core-sdk/-/mongodb-stitch-core-sdk-4.0.0-beta-2.tgz#d3f454fea0f79fb669e53856037aeca4c22bb237"
+mongodb-stitch-core-sdk@^4.0.0-beta-4:
+  version "4.0.0-beta-4"
+  resolved "https://registry.yarnpkg.com/mongodb-stitch-core-sdk/-/mongodb-stitch-core-sdk-4.0.0-beta-4.tgz#52fbcbbc2770ba7852338cb8e1337610115ea4c4"
   dependencies:
     base64-js "^1.3.0"
     bson "^3.0.0"
     fetch-everywhere "^1.0.5"
     mongodb-extjson "^3.0.0"
 
-mongodb-stitch-core-services-mongodb-remote@^4.0.0-beta-2:
-  version "4.0.0-beta-2"
-  resolved "https://registry.yarnpkg.com/mongodb-stitch-core-services-mongodb-remote/-/mongodb-stitch-core-services-mongodb-remote-4.0.0-beta-2.tgz#f068606a82ff5852db3131999a231895b693026b"
+mongodb-stitch-core-services-mongodb-remote@^4.0.0-beta-4:
+  version "4.0.0-beta-4"
+  resolved "https://registry.yarnpkg.com/mongodb-stitch-core-services-mongodb-remote/-/mongodb-stitch-core-services-mongodb-remote-4.0.0-beta-4.tgz#0d57513c87407f8b89bda655113f03d9e5bd4271"
   dependencies:
-    mongodb-stitch-core-sdk "^4.0.0-beta-2"
-
-mongodb-stitch@^3.1.4:
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/mongodb-stitch/-/mongodb-stitch-3.1.6.tgz#15839dd4a044e2b647fc95271ce0f061addf35a9"
-  dependencies:
-    Base64 "^1.0.1"
-    detect-browser "^1.7.0"
-    fetch-everywhere "^1.0.5"
-    jwt-decode "^2.2.0"
-    mongodb-extjson "^3.0.0"
-    query-string "^4.3.4"
+    bson "^3.0.0"
+    mongodb-stitch-core-sdk "^4.0.0-beta-4"
 
 ms@2.0.0:
   version "2.0.0"
@@ -5643,8 +5641,8 @@ postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.13, postcss@^5.0
     supports-color "^3.2.3"
 
 postcss@^6.0.0, postcss@^6.0.1, postcss@^6.0.13:
-  version "6.0.22"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.22.tgz#e23b78314905c3b90cbd61702121e7a78848f2a3"
+  version "6.0.23"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.23.tgz#61c82cc328ac60e677645f979054eb98bc0e3324"
   dependencies:
     chalk "^2.4.1"
     source-map "^0.6.1"
@@ -5768,7 +5766,7 @@ qs@~6.5.1:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
 
-query-string@^4.1.0, query-string@^4.3.4:
+query-string@^4.1.0:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"
   dependencies:
@@ -5869,10 +5867,10 @@ react-dom@^16.4.0:
     prop-types "^15.6.0"
 
 react-emotion@^9.1.3:
-  version "9.2.3"
-  resolved "https://registry.yarnpkg.com/react-emotion/-/react-emotion-9.2.3.tgz#03c3b9dc9ad282c2d50b8137f3a6f72eee5095f3"
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/react-emotion/-/react-emotion-9.2.4.tgz#98e00f70ce2ca4ee13923460123e763e492c013a"
   dependencies:
-    babel-plugin-emotion "^9.2.0"
+    babel-plugin-emotion "^9.2.4"
     create-emotion-styled "^9.2.3"
 
 react-error-overlay@^4.0.0:
@@ -6535,6 +6533,10 @@ source-map@^0.4.4:
 source-map@^0.6.1, source-map@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
+
+source-map@^0.7.2:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
 
 spdx-correct@^3.0.0:
   version "3.0.0"

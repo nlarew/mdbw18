@@ -68,7 +68,7 @@ class Journal extends Component {
   };
 
   updateEntry = async (entryId, newBody) => {
-    // TODO: Update the Entry body in MongoDB
+    // Update the Entry body in MongoDB
     await this.entries.updateOne(
       { _id: entryId },
       { $set: { body: newBody } }
@@ -86,7 +86,7 @@ class Journal extends Component {
   };
 
   shareEntry = async (entryId, email) => {
-    // TODO: Add the provided email to the Entry sharedWith array in MongoDB
+    // Add the provided email to the Entry sharedWith array in MongoDB
     await this.entries.updateOne(
       { _id: entryId },
       { $push: { sharedWith: email } }
@@ -104,7 +104,7 @@ class Journal extends Component {
   };
 
   unshareEntry = async (entryId, email) => {
-    // TODO: Remove the provided email from the Entry sharedWith array in MongoDB
+    // Remove the provided email from the Entry sharedWith array in MongoDB
     await this.entries.updateOne(
       { _id: entryId },
       { $pull: { sharedWith: email } },
