@@ -71,6 +71,6 @@ class StitchApp extends React.Component {
 }
 
 ReactDOM.render(
-  <StitchApp appId="mdbw18-mltgy" />,
+  <StitchApp appId="dailyjournal-tamgo" />,
   document.getElementById("root")
 );
