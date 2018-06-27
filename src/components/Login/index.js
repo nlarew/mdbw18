@@ -56,8 +56,6 @@ export default class Login extends Component {
     return (
       <LoginContainer>
         <LoginForm>
-          <Button onClick={() => loginUser("nlarew@gmail.com", "nlarew")}>nlarew</Button>
-          <Button onClick={() => loginUser("someotheruser@example.com", "password")}>some other user</Button>
           <Form onSubmit={() => { loginUser(username, password); }}>
             <Header as="h1">Log In</Header>
             <Form.Input

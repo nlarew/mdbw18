@@ -22,108 +22,13 @@ class Journal extends Component {
   constructor(props) {
     super(props);
     const { mongodb } = this.props;
-    this.entries = mongodb.db("journal").collection("entries");
+
     this.state = {
       entries: []
     };
   }
 
-  async componentDidMount() {
-    // TODO: Fetch existing journal entries
-    const entries = await this.entries.find({}).asArray();
-
-    // Add entries to Component State
-    this.setState({ entries });
-  }
-
-  addEntry = async (title = "Untitled", body) => {
-    const { currentUser } = this.props;
-    const newEntry = {
-      title,
-      body,
-      owner_id: currentUser.id,
-      author: currentUser.profile.data.email,
-      date: new Date(),
-      sharedWith: []
-    };
-
-    // TODO: Add newEntry to MongoDB
-    const result = await this.entries.insertOne(newEntry);
-    newEntry._id = result.insertedId;
-
-    // Add newEntry to Component State
-    this.setState(({ entries }) => ({
-      entries: [...entries, newEntry]
-    }));
-  };
-
-  removeEntry = async entryId => {
-    // TODO: Delete the entry from MongoDB
-    await this.entries.deleteOne({ _id: entryId });
-
-    // Remove Entry from Component State
-    this.setState(({ entries }) => ({
-      entries: entries.filter(entry => entry._id !== entryId)
-    }));
-  };
-
-  updateEntry = async (entryId, newBody) => {
-    // Update the Entry body in MongoDB
-    await this.entries.updateOne(
-      { _id: entryId },
-      { $set: { body: newBody } }
-    );
-
-    // Update the Entry body and disable editing in Component State
-    this.setState(({ entries }) => ({
-      entries: entries.map(
-        entry =>
-          entry._id === entryId
-            ? { ...entry, body: newBody, isEditable: false }
-            : entry
-      )
-    }));
-  };
-
-  shareEntry = async (entryId, email) => {
-    // Add the provided email to the Entry sharedWith array in MongoDB
-    await this.entries.updateOne(
-      { _id: entryId },
-      { $push: { sharedWith: email } }
-    );
-
-    // Add the provided email to the Entry sharedWith array in Component State
-    this.setState(({ entries }) => ({
-      entries: entries.map(
-        entry =>
-          entry._id === entryId
-            ? { ...entry, sharedWith: [...entry.sharedWith, email] }
-            : entry
-      )
-    }));
-  };
-
-  unshareEntry = async (entryId, email) => {
-    // Remove the provided email from the Entry sharedWith array in MongoDB
-    await this.entries.updateOne(
-      { _id: entryId },
-      { $pull: { sharedWith: email } },
-      { multi: true }
-    );
-
-    // Remove the provided email from the Entry sharedWith array in Component State
-    this.setState(({ entries }) => ({
-      entries: entries.map(
-        entry =>
-          entry._id === entryId
-            ? {
-                ...entry,
-                sharedWith: entry.sharedWith.filter(e => e !== email)
-              }
-            : entry
-      )
-    }));
-  };
+  
 
   editEntry = entryId => {
     // Enable Entry editing in Component State
