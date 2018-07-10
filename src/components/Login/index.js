@@ -11,7 +11,7 @@ import {
 
 const LoginContainer = styled.div`
   height: 100%;
-  
+
   display: grid;
   grid-template-rows: 50px auto 1fr;
   grid-template-columns: 1fr 500px 1fr;
@@ -29,7 +29,7 @@ export default class Login extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       userInput: {
         username: "",
@@ -50,14 +50,12 @@ export default class Login extends Component {
       errorMessage,
       userInput: { username, password },
     } = this.state;
-    
+
     const { loginUser } = this.props;
-    
+
     return (
       <LoginContainer>
         <LoginForm>
-          <Button onClick={() => loginUser("nlarew@gmail.com", "nlarew")}>nlarew</Button>
-          <Button onClick={() => loginUser("someotheruser@example.com", "password")}>some other user</Button>
           <Form onSubmit={() => { loginUser(username, password); }}>
             <Header as="h1">Log In</Header>
             <Form.Input
