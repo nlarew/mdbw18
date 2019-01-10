@@ -2,7 +2,7 @@
     "name": "aws-ses",
     "type": "aws-ses",
     "config": {
-        "accessKeyId": "AKIAJED5T6MUYDMQWB2Q",
+        "accessKeyId": "",
         "region": "us-east-1"
     },
     "version": 1

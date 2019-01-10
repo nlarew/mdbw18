@@ -1,4 +1,4 @@
-exports = function(changeEvent){
+exports = function(changeEvent) {
   const { updateDescription, fullDocument } = changeEvent;
   const updatedFields = Object.keys(updateDescription.updatedFields);
 
