@@ -30,7 +30,7 @@ class Journal extends Component {
 
   async componentDidMount() {
     // TODO: Fetch existing journal entries
-    const entries = await this.entries.find({}).asArray();
+    const entries = await this.entries.find({}).toArray();
 
     // Add entries to Component State
     this.setState({ entries });

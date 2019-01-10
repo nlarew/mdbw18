@@ -20,13 +20,13 @@ class StitchApp extends React.Component {
   static propTypes = {
     appId: PropTypes.string.isRequired,
   };
-  
+
   constructor(props) {
     super(props);
     this.appId = props.appId;
     this.client = Stitch.initializeDefaultAppClient(this.appId);
     this.mongodb = this.client.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
-  
+
     const isAuthed = this.client.auth.isLoggedIn;
     this.state = { isAuthed };
   }
@@ -38,8 +38,12 @@ class StitchApp extends React.Component {
     }
 
     const credential = new UserPasswordCredential(email, password);
-    await this.client.auth.loginWithCredential(credential);
-    this.setState({ isAuthed: true });
+    try {
+      await this.client.auth.loginWithCredential(credential);
+      this.setState({ isAuthed: true });
+    } catch(err) {
+      console.error('Failed to Authenticate with Stitch', err);
+    }
   };
 
   logout = async () => {
@@ -50,7 +54,7 @@ class StitchApp extends React.Component {
   render() {
     const { isAuthed } = this.state;
     const currentUser = isAuthed && this.client.auth.currentUser;
-    
+
     return (
       <Page
         currentUser={currentUser}
@@ -71,6 +75,6 @@ class StitchApp extends React.Component {
 }
 
 ReactDOM.render(
-  <StitchApp appId="dailyjournal-tamgo" />,
+  <StitchApp appId="mdbw18-wjsrc" />,
   document.getElementById("root")
 );
